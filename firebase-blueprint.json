@@ -1,0 +1,210 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "name": { "type": "string", "description": "User's full name" },
+        "email": { "type": "string", "description": "User's email address" },
+        "role": { "type": "string", "description": "User's role (e.g., Member, Admin)" },
+        "teamId": { "type": "string", "description": "ID of the team the user belongs to" },
+        "department": { "type": "string", "description": "User's department" },
+        "healthScore": { "type": "number", "description": "Overall health score" },
+        "productivityScore": { "type": "number", "description": "Productivity score" },
+        "tasksCompleted": { "type": "number", "description": "Number of completed tasks" },
+        "punctuality": { "type": "number", "description": "Punctuality percentage" },
+        "engagement": { "type": "number", "description": "Engagement percentage" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "email", "role"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "A task assigned to team members.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "priority": { "type": "string", "enum": ["low", "medium", "high", "urgent"] },
+        "status": { "type": "string", "enum": ["todo", "in-progress", "review", "done"] },
+        "assignees": { "type": "array", "items": { "type": "string" } },
+        "creatorId": { "type": "string" },
+        "teamId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "deadline": { "type": "string", "format": "date-time" },
+        "progress": { "type": "number" },
+        "riskLevel": { "type": "string", "enum": ["low", "medium", "high"] }
+      },
+      "required": ["title", "priority", "status", "creatorId", "teamId", "createdAt", "deadline", "progress"]
+    },
+    "Team": {
+      "title": "Team",
+      "description": "A team created by a Team Lead.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "leadId": { "type": "string" },
+        "joinCode": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "leadId", "joinCode", "createdAt"]
+    },
+    "JoinRequest": {
+      "title": "Join Request",
+      "description": "A request from a Team Member to join a team.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "teamId": { "type": "string" },
+        "teamName": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "userName", "userEmail", "teamId", "teamName", "status", "createdAt"]
+    },
+    "App": {
+      "title": "App",
+      "description": "An external application used by the team.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "url": { "type": "string" },
+        "loginId": { "type": "string" },
+        "password": { "type": "string" },
+        "teamId": { "type": "string" },
+        "creatorId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "url", "loginId", "password", "teamId", "creatorId", "createdAt"]
+    },
+    "Favorite": {
+      "title": "Favorite",
+      "description": "User's favorited items.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "teamId": { "type": "string" },
+        "title": { "type": "string" },
+        "type": { "type": "string" },
+        "category": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "teamId", "title", "type", "category", "updatedAt"]
+    },
+    "RoadmapPhase": {
+      "title": "Roadmap Phase",
+      "description": "A phase in the project roadmap.",
+      "type": "object",
+      "properties": {
+        "teamId": { "type": "string" },
+        "title": { "type": "string" },
+        "startDate": { "type": "string", "format": "date" },
+        "endDate": { "type": "string", "format": "date" },
+        "members": { "type": "number" },
+        "tasks": { "type": "array", "items": { "type": "object" } },
+        "order": { "type": "number" }
+      },
+      "required": ["teamId", "title", "startDate", "endDate", "members", "tasks", "order"]
+    },
+    "Goal": {
+      "title": "Goal",
+      "description": "A strategic goal for the team.",
+      "type": "object",
+      "properties": {
+        "teamId": { "type": "string" },
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "progress": { "type": "number" },
+        "deadline": { "type": "string", "format": "date" },
+        "subgoals": { "type": "array", "items": { "type": "object" } }
+      },
+      "required": ["teamId", "title", "category", "progress", "deadline", "subgoals"]
+    },
+    "AutomatedEmail": {
+      "title": "Automated Email",
+      "description": "Logs of automated reminder emails sent to users.",
+      "type": "object",
+      "properties": {
+        "teamId": { "type": "string" },
+        "taskId": { "type": "string" },
+        "taskTitle": { "type": "string" },
+        "recipientIds": { "type": "array", "items": { "type": "string" } },
+        "recipientEmails": { "type": "array", "items": { "type": "string" } },
+        "subject": { "type": "string" },
+        "body": { "type": "string" },
+        "sentAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["teamId", "taskId", "taskTitle", "recipientIds", "recipientEmails", "subject", "body", "sentAt"]
+    }
+  },
+  "firestore": {
+    "/automatedEmails/{emailId}": {
+      "schema": { "$ref": "#/entities/AutomatedEmail" },
+      "description": "Stores logged automated emails sent before task deadlines."
+    },
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Stores user profiles."
+    },
+    "/tasks/{taskId}": {
+      "schema": { "$ref": "#/entities/Task" },
+      "description": "Stores tasks."
+    },
+    "/teams/{teamId}": {
+      "schema": { "$ref": "#/entities/Team" },
+      "description": "Stores teams."
+    },
+    "/joinRequests/{requestId}": {
+      "schema": { "$ref": "#/entities/JoinRequest" },
+      "description": "Stores join requests."
+    },
+    "/apps/{appId}": {
+      "schema": { "$ref": "#/entities/App" },
+      "description": "Stores team applications."
+    },
+    "/securityLogs/{logId}": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "userId": { "type": "string" },
+          "userName": { "type": "string" },
+          "action": { "type": "string" },
+          "type": { "type": "string", "enum": ["security", "auth", "system", "warning"] },
+          "teamId": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" }
+        },
+        "required": ["userId", "userName", "action", "type", "teamId", "createdAt"]
+      },
+      "description": "Stores security and activity logs."
+    },
+    "/teamSettings/{teamId}": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "publicAccess": { "type": "boolean" },
+          "fileSharing": { "type": "boolean" },
+          "apiAccess": { "type": "boolean" },
+          "twoFactorRequired": { "type": "boolean" }
+        },
+        "required": ["publicAccess", "fileSharing", "apiAccess", "twoFactorRequired"]
+      },
+      "description": "Stores team-wide security settings."
+    },
+    "/favorites/{favoriteId}": {
+      "schema": { "$ref": "#/entities/Favorite" },
+      "description": "Stores user favorites."
+    },
+    "/roadmapPhases/{phaseId}": {
+      "schema": { "$ref": "#/entities/RoadmapPhase" },
+      "description": "Stores roadmap phases."
+    },
+    "/goals/{goalId}": {
+      "schema": { "$ref": "#/entities/Goal" },
+      "description": "Stores strategic goals."
+    }
+  }
+}

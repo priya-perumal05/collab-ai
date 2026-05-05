@@ -1,0 +1,5 @@
+{
+  "name": "Collab AI",
+  "description": "A modern, interactive web application for team task management and performance tracking with a glassmorphism design.",
+  "requestFramePermissions": ["microphone"]
+}
